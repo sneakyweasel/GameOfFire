@@ -58,7 +58,7 @@
                 <span class="navbar-item">
                   <a
                     class="button is-info"
-                    href="https://github.com/sneakyweasel/Game-of-Life-Vue2/"
+                    href="https://github.com/sneakyweasel/GameOfFire"
                     target="_blank"
                     rel="noopener"
                   >
@@ -369,7 +369,7 @@ export default {
 @import url(../src/scss/main.scss);
 html,
 body {
-  background-color: #000;
+  background-color: #000 !important;
   color: #000;
   font-family: 'Dosis', Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
