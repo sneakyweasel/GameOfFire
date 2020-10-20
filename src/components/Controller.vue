@@ -70,7 +70,7 @@
           @click="send('importSession')"
         >
           <span class="icon">
-            <i class="far fa-edit" />
+            <i class="far fa-upload" />
           </span>
           <b>Import</b>
         </button>
@@ -82,7 +82,7 @@
           @click="send('exportSession')"
         >
           <span class="icon">
-            <i class="far fa-save" />
+            <i class="far fa-download" />
           </span>
           <b>Export</b>
         </button>

@@ -12,18 +12,14 @@
         />
       </div>
     </div>
-    <div>
-      [x:{{ selected.x }}, y:{{ selected.y }}] is {{ selected.alive ? 'alive' : 'dead' }} with a
-      risk of {{ selected.risk }}
-    </div>
 
-    <!-- SIDEBAR -->
+    <!-- STATS -->
     <stats
       class="stats"
       :current-tick="currentTick"
-      :cell-count="cellCount"
-      :cells-alive="cellsAlive"
-      :cells-created="cellsCreated"
+      :cells-alive="alives().length"
+      :hairyness="hairyness()"
+      :edges="edges()"
       :current-speed="currentSpeed"
     />
   </div>
@@ -46,7 +42,7 @@ export default class Board extends Vue {
   @Prop() importToken!: string
   @Prop() currentSpeed!: number
 
-  width = 30
+  width = 31
   height = 20
   grid: CellI[][] = []
   // Stats that get passed down to the app-stats component
@@ -107,13 +103,16 @@ export default class Board extends Vue {
       return !cell.alive && cell.risk > 0
     })
   }
+
   /** List of cells at risk */
-  // totalRisk(): number {
-  //   let sum = 0
-  //   for (let i = 0; i < this.risks.length; i += 1) {
-  //     sum += risks[i].risk
-  //   }
-  // }
+  edges(): number {
+    return this.risks().reduce((acc, cell): number => acc + cell.risk, 0)
+  }
+
+  /** Hairyness */
+  hairyness(): number {
+    return this.edges() / this.alives().length
+  }
 
   /**
    * Changes the grid cell to the one requested
@@ -210,10 +209,13 @@ export default class Board extends Vue {
         y: y + 1,
       },
     ]
-    coords = coords.filter((coord: Coord) => {
-      return coord.x >= 0 && coord.x < this.width && coord.y >= 0 && coord.y < this.height
-    })
+    coords = coords.filter((coord: Coord) => this.validate(coord))
     return coords
+  }
+
+  /** Check coord */
+  validate(coord: Coord): boolean {
+    return coord.x >= 0 && coord.x < this.width && coord.y >= 0 && coord.y < this.height
   }
 
   /**
@@ -277,10 +279,15 @@ export default class Board extends Vue {
       tempArr.forEach((element) => {
         element = element.substring(1, element.length - 1)
         const xy = element.split(',')
-        const cell: CellI = { x: parseInt(xy[0]), y: parseInt(xy[1]), alive: true, risk: 0 }
-        this.grid[cell.x][cell.y] = cell
+        const x = parseInt(xy[0])
+        const y = parseInt(xy[1])
+        if (this.validate({ x, y })) {
+          const cell: CellI = { x: parseInt(xy[0]), y: parseInt(xy[1]), alive: true, risk: 0 }
+          this.grid[cell.x][cell.y] = cell
+        }
       })
     }
+    this.updateRisk()
   }
 
   /**

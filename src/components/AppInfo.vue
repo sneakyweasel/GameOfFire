@@ -20,11 +20,22 @@
       <h5 class="title is-5">The rules:</h5>
       <p>
         We define the “hairiness” (H) or exteriority of any configuration as the number of exposed
-        tile edges divided by the number of tiles. For example: With one tile on the plane, H = 4
-        edges ÷ 1 tile = 4. For a ring of eight tiles, H = 16 edges ÷ 8 tiles = 2. For a row of
-        eight tiles, H = 18 edges ÷ 8 tiles = 2.25. The reciprocal of H may be called the
-        interiority or compactness of the configuration.
+        tile edges divided by the number of tiles.
+        <br />
+        The reciprocal of H may be called the interiority or compactness of the configuration.
       </p>
+      <ul>
+        <li>
+          With one tile on the plane, H = 4 edges ÷ 1 tile = 4.
+        </li>
+        <li>
+          For a ring of eight tiles, H = 16 edges ÷ 8 tiles = 2.
+        </li>
+        <li>
+          For a row of eight tiles, H = 18 edges ÷ 8 tiles = 2.25.
+        </li>
+      </ul>
+
       <h5 class="title is-5">Questions</h5>
       <ol>
         <li>

@@ -8,9 +8,9 @@
             <div class="navbar-brand">
               <a class="navbar-item" style="color: #fff">
                 <span class="icon">
-                  <i class="fas fa-heartbeat" />
+                  <i class="fas fa-fire" />
                 </span>
-                <span><strong>GAME OF WEASEL</strong></span>
+                <span><strong>GAME OF FIRE</strong></span>
               </a>
               <span
                 :class="{ 'is-active': isNavbar }"
@@ -151,7 +151,7 @@
               <button class="button" @click="isImport = false">Cancel</button>
               <div class="field">
                 <p class="control has-icons-left">
-                  <!-- <span class="select">
+                  <span class="select">
                     <select v-model="selectedScenario">
                       <option value="scenario" selected>Scenario</option>
                       <option value="gosper">Gosper glider gun</option>
@@ -162,7 +162,7 @@
                   </span>
                   <span class="icon is-small is-left">
                     <i class="fas fa-list-ul" style="color: #000" />
-                  </span> -->
+                  </span>
                 </p>
               </div>
             </footer>
@@ -346,7 +346,8 @@ export default {
 @import url(../src/scss/main.scss);
 html,
 body {
-  background-image: linear-gradient(to right top, #a34d91, #42448c);
+  // background-image: linear-gradient(to right top, #a34d91, #42448c);
+  background-image: linear-gradient(to right top, black, darkred);
   color: #000;
   font-family: 'Dosis', Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;

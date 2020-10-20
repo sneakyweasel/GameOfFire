@@ -2,16 +2,16 @@
   <div class="box">
     <div class="columns is-fullwidth is-gapless">
       <div class="column is-size-7-mobile is-half-mobile">
-        <strong>TICK: {{ currentTick }}</strong>
-      </div>
-      <div class="column is-size-7-mobile is-half-mobile">
-        <strong>CELL COUNT: {{ cellCount }}</strong>
+        <strong>TIME: {{ currentTick }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
         <strong>CELLS ALIVE: {{ cellsAlive }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
-        <strong>CELLS CREATED: {{ cellsCreated }}</strong>
+        <strong>EDGES: {{ edges }}</strong>
+      </div>
+      <div class="column is-size-7-mobile is-half-mobile">
+        <strong>HAIRYNESS: {{ hairyness.toFixed(3) }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
         <strong>SPEED: {{ currentSpeed }} %</strong>
@@ -20,46 +20,31 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    currentTick: {
-      default: 0,
-      type: Number,
-    },
-    cellCount: {
-      default: 0,
-      type: Number,
-    },
-    cellsAlive: {
-      default: 0,
-      type: Number,
-    },
-    cellsCreated: {
-      default: 0,
-      type: Number,
-    },
-    currentSpeed: {
-      default: 0,
-      type: Number,
-    },
-  },
-  data() {
-    return {}
-  },
-  methods: {},
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
+
+@Component
+export default class Board extends Vue {
+  @Prop() currentTick!: number
+  @Prop() cellCount!: number
+  @Prop() cellsAlive!: number
+  @Prop() cellsCreated!: number
+  @Prop() currentSpeed!: number
+  @Prop() hairyness!: number
+  @Prop() edges!: number
 }
 </script>
 
 <style scoped>
 .box {
-  background-color: #e7eef5;
+  background-color: #eee;
 }
 .columns {
   display: flex;
   flex-wrap: wrap;
 }
 .column {
+  color: white;
   margin: 0;
 }
 </style>

@@ -50,11 +50,16 @@ $risk2: #ff9a00;
 $risk3: #ff7400;
 $risk4: #ff5a00;
 $alive: #ff0d00;
+$time: 500ms;
 .cell {
   flex: 1;
   padding-bottom: 100%;
   // border-right: 1px solid lightgrey;
   // border-bottom: 1px solid lightgrey;
+  background-color: #111;
+  -webkit-transition: background-color $time linear;
+  -ms-transition: background-color $time linear;
+  transition: background-color $time linear;
   &:hover {
     background-color: lighten($alive, 25) !important;
   }
