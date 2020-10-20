@@ -1,8 +1,11 @@
 # Game of Fire
 
-## Problem 3 of the Conway QuantaMagazine tribute
+You have an infinite plane on which you place square tiles. One at a time, you add new tiles randomly such that each new tile shares at least one edge with a previously placed tile. The probability of a tile being placed in any given location is proportional to the number of edges of previously placed tiles that border that location.
 
-- I wrote this as a tribute to Conway.
+## Conway QuantaMagazine tribute
+
+- I wrote this as a tribute to Conway. [QuantaMagazine](https://www.quantamagazine.org/three-math-puzzles-inspired-by-john-horton-conway-20201015/#comments)
+- Inspired by [ljee](https://github.com/Ijee) game of life implementation.
 
 ## Project setup
 
