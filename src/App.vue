@@ -64,9 +64,15 @@
         <div class="container is-paddingless">
           <div class="columns box is-fullwidth is-gapless">
             <div class="column is-12">
+              <controller
+                v-if="mainComponent == 'gamePage'"
+                :is-running="isRunning"
+                :main-component="mainComponent"
+                @send="delegate($event)"
+              />
               <transition mode="out-in" name="fade">
                 <keep-alive>
-                  <app-grid
+                  <grid
                     v-if="mainComponent == 'gamePage'"
                     :message="message"
                     :import-token="importToken"
@@ -111,19 +117,8 @@
         </div>
       </div>
       <!-- Bulma - Hero footer -->
-      <footer class="footer">
-        <div class="container">
-          <div class="columns ">
-            <div class="column is-fullwidth">
-              <app-controller
-                :is-running="isRunning"
-                :main-component="mainComponent"
-                @send="delegate($event)"
-              />
-            </div>
-          </div>
-        </div>
-      </footer>
+      <!-- <footer class="footer"> -->
+      <!-- </footer> -->
       <!-- Bulma - Modal -->
       <transition mode="out-in" name="fade">
         <div v-if="isImport" :class="isImport ? 'is-active' : 'inactive'" class="modal">
@@ -187,9 +182,9 @@ import { setInterval, clearInterval } from 'timers'
 export default {
   name: 'App',
   components: {
-    'app-grid': Grid,
-    'app-info': AppInfo,
-    'app-controller': Controller,
+    Grid,
+    AppInfo,
+    Controller,
   },
   data() {
     return {
@@ -382,7 +377,7 @@ body {
 }
 .footer {
   padding: 1rem;
-  background-color: transparent;
+  background-color: black;
 }
 .navbar-item {
   color: #ff9766;

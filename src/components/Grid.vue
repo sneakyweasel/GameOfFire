@@ -23,6 +23,9 @@
       :edges="edges()"
       :current-speed="currentSpeed"
     />
+
+    <!-- CONTROLLER -->
+    <!-- <controller :is-running="isRunning" :main-component="mainComponent" @send="delegate($event)" /> -->
   </div>
 </template>
 
@@ -31,11 +34,13 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { CellI, Coord } from '@/engine/interfaces'
 import Cell from '@/components/Cell.vue'
 import Stats from '@/components/Stats.vue'
+import Controller from '@/components/Controller.vue'
 
 @Component({
   components: {
     Stats,
     Cell,
+    Controller,
   },
 })
 export default class Board extends Vue {

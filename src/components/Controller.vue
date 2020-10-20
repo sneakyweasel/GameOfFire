@@ -61,8 +61,6 @@
           <b>Random</b>
         </button>
       </p>
-    </div>
-    <div class="field has-addons has-addons-centered is-marginless">
       <p class="control">
         <button
           :disabled="mainComponent !== 'gamePage'"
@@ -70,7 +68,7 @@
           @click="send('importSession')"
         >
           <span class="icon">
-            <i class="far fa-upload" />
+            <i class="fa fa-upload" />
           </span>
           <b>Import</b>
         </button>
@@ -82,7 +80,7 @@
           @click="send('exportSession')"
         >
           <span class="icon">
-            <i class="far fa-download" />
+            <i class="fa fa-download" />
           </span>
           <b>Export</b>
         </button>

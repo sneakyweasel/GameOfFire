@@ -1,34 +1,39 @@
-# hairyness
+# Game of Fire
 
-## Findings
+## Problem 3 of the Conway QuantaMagazine tribute
 
-- Any closed loop of a contiguous line has an hairyness of 2.
-- Since each connected cell has 2 free edges, therefore the hairyness ratio is 2.
+- I wrote this as a tribute to Conway.
 
 ## Project setup
-```
+
+```bash
 yarn install
 ```
 
 ### Compiles and hot-reloads for development
-```
+
+```bash
 yarn serve
 ```
 
 ### Compiles and minifies for production
-```
+
+```bash
 yarn build
 ```
 
 ### Run your unit tests
-```
+
+```bash
 yarn test:unit
 ```
 
 ### Lints and fixes files
-```
+
+```bash
 yarn lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
