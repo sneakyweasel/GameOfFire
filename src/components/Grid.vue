@@ -1,20 +1,20 @@
 <template>
   <div>
     <!-- GRID -->
-    <div
-      class="game-grid columns"
-      @mousedown="isMouseDown = true"
-      @mouseup="isMouseDown = false"
-      @mouseleave="isMouseDown = false"
-    >
-      <div v-for="(col, indexX) in gridList" :key="indexX" class="game-column">
+    <div class="game-grid columns">
+      <div v-for="(col, indexX) in grid" :key="indexX" class="game-column">
         <cell
           v-for="(cell, indexY) in col"
           :key="indexY"
           :cell="cell"
           @toggleCell="toggleCell(cell)"
+          @hoveredCell="displayCell(cell)"
         />
       </div>
+    </div>
+    <div>
+      [x:{{ selected.x }}, y:{{ selected.y }}] is {{ selected.alive ? 'alive' : 'dead' }} with a
+      risk of {{ selected.risk }}
     </div>
 
     <!-- SIDEBAR -->
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import { CellI } from '@/engine/interfaces'
+import { CellI, Coord } from '@/engine/interfaces'
 import Cell from '@/components/Cell.vue'
 import Stats from '@/components/Stats.vue'
 
@@ -46,9 +46,9 @@ export default class Board extends Vue {
   @Prop() importToken!: string
   @Prop() currentSpeed!: number
 
-  width = 4
-  height = 3
-  gridList: CellI[][] = []
+  width = 30
+  height = 20
+  grid: CellI[][] = []
   // Stats that get passed down to the app-stats component
   currentTick = 0
   cellCount = 0
@@ -56,6 +56,7 @@ export default class Board extends Vue {
   cellsCreated = 0
   // A prop that gets used by the app-cell component (drag)
   isMouseDown = false
+  selected: CellI = { x: 0, y: 0, alive: false, risk: 0 }
 
   @Watch('message')
   onMessageChanged(val: string) {
@@ -74,59 +75,101 @@ export default class Board extends Vue {
   }
 
   created() {
-    this.cellCalc()
+    this.init()
+    this.createDefaultCell()
   }
 
   /**
    * Creates a 2D-Array during runtime for
    * the website to use for most operations.
    */
-  cellCalc(): void {
+  init(): void {
     for (let x = 0; x < this.width; x++) {
-      this.gridList[x] = []
+      this.grid[x] = []
       for (let y = 0; y < this.height; y++) {
         const cell: CellI = { x, y, alive: false, risk: 0 }
-        this.gridList[x][y] = cell
+        this.grid[x][y] = cell
       }
     }
     this.cellCount = this.width * this.height
   }
 
-  /**
-   * Changes the 'isAlive' object property
-   * of a specific cell to the one requested
-   * in the param.
-   *
-   * @param {number} x - the x position
-   * @param {number} y - the y position
-   * @param {boolean} bool - the new boolean
-   */
-  setCell(cell: CellI): void {
-    console.log(`Set cell: ${JSON.stringify(cell)}`)
-    this.gridList[cell.x][cell.y] = cell
+  /** List of alive cells */
+  alives(): CellI[] {
+    return this.grid.flat().filter((cell: CellI) => {
+      return cell.alive
+    })
   }
 
+  /** List of cells at risk */
+  risks(): CellI[] {
+    return this.grid.flat().filter((cell: CellI) => {
+      return !cell.alive && cell.risk > 0
+    })
+  }
+  /** List of cells at risk */
+  // totalRisk(): number {
+  //   let sum = 0
+  //   for (let i = 0; i < this.risks.length; i += 1) {
+  //     sum += risks[i].risk
+  //   }
+  // }
+
+  /**
+   * Changes the grid cell to the one requested
+   * in the param.
+   */
+  getCell(x: number, y: number): CellI {
+    return this.grid[x][y]
+  }
+
+  /**
+   * Changes the grid cell to the one requested
+   * in the param.
+   */
+  displayCell(cell: CellI): void {
+    this.selected = cell
+  }
+
+  /**
+   * Toggle the grid cell alive status
+   */
   toggleCell(cell: CellI): void {
-    this.gridList[cell.x][cell.y].alive = cell.alive
-    this.update()
+    const tempCell = this.grid[cell.x][cell.y]
+    tempCell.alive = !tempCell.alive
+    this.updateRisk()
   }
 
   /**
    * The main function that updates the grid
    * every tick based on the game of life rules.
    */
-  update(): void {
+  updateRisk(): void {
     // Update neighbours count
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        const status = this.gridList[x][y].alive
+        const cell = this.getCell(x, y)
         const neighbours = this.getNeighbours(x, y)
-        this.setCell({ x, y, alive: status, risk: neighbours })
+        if (cell.alive) {
+          this.grid[cell.x][cell.y] = { x, y, alive: true, risk: 0 }
+        } else {
+          this.grid[cell.x][cell.y] = { x, y, alive: false, risk: neighbours }
+        }
       }
     }
-    // Get a weighted random int for fate
-    // const fateCell = this.weightedRandomFate()
-    // this.setCell(fateCell)
+    this.$forceUpdate()
+  }
+
+  /**
+   * The main function that updates the grid
+   * every tick based on a random weighted fate toggle.
+   */
+  update(): void {
+    const cell = this.weightedRandomFate()
+    console.log(`Fate has selected: ${JSON.stringify(cell)}`)
+    cell.alive = true
+    this.grid[cell.x][cell.y] = cell
+    this.updateRisk()
   }
 
   /**
@@ -137,30 +180,40 @@ export default class Board extends Vue {
    * @param {number} posY - the Y position
    * @return {number} neighbours - amount of neighbours
    */
-  getNeighbours(posX: number, posY: number): number {
-    let neighbours = 0
-    if (posX <= this.width && posY <= this.height) {
-      for (let offsetX = -1; offsetX < 2; offsetX++) {
-        for (let offsetY = -1; offsetY < 2; offsetY++) {
-          const newX = posX + offsetX
-          const newY = posY + offsetY
-          // check if offset is:
-          // on current cell, out of bounds and if isAlive
-          // for cell true
-          if (
-            (offsetX != 0 || offsetY != 0) &&
-            newX >= 0 &&
-            newX < this.width &&
-            newY >= 0 &&
-            newY < this.height &&
-            this.gridList[posX + offsetX][posY + offsetY].alive == true
-          ) {
-            neighbours++
-          }
-        }
-      }
-    }
-    return neighbours
+  getNeighbours(x: number, y: number): number {
+    const coords = this.neighbours(x, y)
+    return coords.filter((coord) => {
+      return this.grid[coord.x][coord.y].alive
+    }).length
+  }
+
+  /**
+   * Get the neighbouring grid cell at given direction
+   * @param direction
+   */
+  neighbours(x: number, y: number): Coord[] {
+    let coords = [
+      {
+        x: x + 1,
+        y,
+      },
+      {
+        x,
+        y: y - 1,
+      },
+      {
+        x: x - 1,
+        y,
+      },
+      {
+        x,
+        y: y + 1,
+      },
+    ]
+    coords = coords.filter((coord: Coord) => {
+      return coord.x >= 0 && coord.x < this.width && coord.y >= 0 && coord.y < this.height
+    })
+    return coords
   }
 
   /**
@@ -171,11 +224,24 @@ export default class Board extends Vue {
     this.currentTick = 0
     this.cellsAlive = 0
     this.cellsCreated = 0
-    this.gridList.forEach((col) => {
+    this.grid.forEach((col) => {
       col.forEach((cell) => {
         cell.alive = false
       })
     })
+    this.updateRisk()
+  }
+
+  /** Create default cell */
+  createDefaultCell() {
+    if (this.alives.length === 0) {
+      this.toggleCell({
+        x: Math.floor(this.width / 2),
+        y: Math.floor(this.height / 2),
+        alive: true,
+        risk: 0,
+      })
+    }
   }
 
   /**
@@ -185,13 +251,14 @@ export default class Board extends Vue {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const rand = Math.random()
-        if (rand < 0.2) {
-          this.setCell({ x, y, alive: true, risk: 0 })
+        if (rand < 0.1) {
+          this.grid[x][y] = { x, y, alive: true, risk: 0 }
         } else {
-          this.setCell({ x, y, alive: false, risk: 0 })
+          this.grid[x][y] = { x, y, alive: false, risk: 0 }
         }
       }
     }
+    this.updateRisk()
   }
 
   /**
@@ -211,7 +278,7 @@ export default class Board extends Vue {
         element = element.substring(1, element.length - 1)
         const xy = element.split(',')
         const cell: CellI = { x: parseInt(xy[0]), y: parseInt(xy[1]), alive: true, risk: 0 }
-        this.setCell(cell)
+        this.grid[cell.x][cell.y] = cell
       })
     }
   }
@@ -225,7 +292,7 @@ export default class Board extends Vue {
     let exportToken = ''
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
-        if (this.gridList[i][j].alive) {
+        if (this.grid[i][j].alive) {
           exportToken += '[' + i + ',' + j + ']'
         }
       }
@@ -254,29 +321,29 @@ export default class Board extends Vue {
    * @returns A number [0, ..., weights.length -1].
    */
   weightedRandomFate(): CellI {
-    const filtered = this.gridList.flat().filter((cell: CellI) => {
-      return !cell.alive && cell.risk > 0
-    })
-
+    // Random scaled value
+    const risks = this.risks()
     let rand = Math.random()
-    rand *= filtered.reduce((acc, cell): number => acc + cell.risk, 0)
-
+    rand *= risks.reduce((acc, cell): number => acc + cell.risk, 0)
+    // Fate selection
     let sum = 0
-    for (let i = 0; i < filtered.length; i += 1) {
-      sum += filtered[i].risk
+    for (let i = 0; i < risks.length; i += 1) {
+      sum += risks[i].risk
       if (sum > rand) {
-        return filtered[i]
+        return risks[i]
       }
     }
-    throw new Error('Fate Problems...')
+    return risks[0]
+    // throw new Error('Fate Problems...')
   }
 }
 </script>
 
 <style lang="scss">
 .game-grid {
-  border-top: 1px solid lightgrey;
-  border-left: 1px solid lightgrey;
+  // border-top: 1px solid lightgrey;
+  // border-left: 1px solid lightgrey;
+  background-color: black;
   display: flex;
   flex: 0.8;
   justify-content: center;
