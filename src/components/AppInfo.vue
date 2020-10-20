@@ -64,22 +64,21 @@
       <h5 class="title is-5">Thanks</h5>
       <p>
         This game is based on <a href="https://github.com/Ijee">ljee</a> game of life implementation
-        refactored with typescript and code I wrote for Quantum Game 2.
+        refactored with typescript and code I wrote for
+        <a href="https://quantumgame.io/">Quantum Game 2</a>.
       </p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {}
-  },
-  methods: {},
-}
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component
+export default class AppInfo extends Vue {}
 </script>
 
-<style>
+<style lang="scss" scoped>
 .subtitle {
   color: grey;
 }

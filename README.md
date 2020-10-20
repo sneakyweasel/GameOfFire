@@ -1,5 +1,10 @@
 # hairyness
 
+## Findings
+
+- Any closed loop of a contiguous line has an hairyness of 2.
+- Since each connected cell has 2 free edges, therefore the hairyness ratio is 2.
+
 ## Project setup
 ```
 yarn install

@@ -19,6 +19,7 @@
       :current-tick="currentTick"
       :cells-alive="alives().length"
       :hairyness="hairyness()"
+      :compactness="compactness()"
       :edges="edges()"
       :current-speed="currentSpeed"
     />
@@ -112,6 +113,11 @@ export default class Board extends Vue {
   /** Hairyness */
   hairyness(): number {
     return this.edges() / this.alives().length
+  }
+
+  /** Compactness */
+  compactness(): number {
+    return this.alives().length / this.edges()
   }
 
   /**
@@ -346,7 +352,7 @@ export default class Board extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .game-grid {
   // border-top: 1px solid lightgrey;
   // border-left: 1px solid lightgrey;

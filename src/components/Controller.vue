@@ -91,36 +91,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    isRunning: {
-      default: false,
-      type: Boolean,
-    },
-    mainComponent: {
-      default: 'gamePage',
-      type: String,
-    },
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    /**
-     * emits the action that is requested
-     * by the client up to the App component.
-     *
-     * @param {string} event - the event
-     */
-    send: function(event) {
-      this.$emit('send', event)
-    },
-  },
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator'
+
+@Component
+export default class Controller extends Vue {
+  @Prop() isRunning = false
+  @Prop() mainComponent = 'gamePage'
+
+  /**
+   * emits the action that is requested
+   * by the client up to the App component.
+   */
+  send(event: string) {
+    this.$emit('send', event)
+  }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .box {
   padding: 0;
 }

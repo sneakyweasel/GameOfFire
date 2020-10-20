@@ -5,10 +5,10 @@
         <strong>TIME: {{ currentTick }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
-        <strong>CELLS ALIVE: {{ cellsAlive }}</strong>
+        <strong>EDGES: {{ edges }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
-        <strong>EDGES: {{ edges }}</strong>
+        <strong>CELLS ALIVE: {{ cellsAlive }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
         <strong>HAIRYNESS: {{ hairyness.toFixed(3) }}</strong>
@@ -26,12 +26,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 @Component
 export default class Board extends Vue {
   @Prop() currentTick!: number
-  @Prop() cellCount!: number
-  @Prop() cellsAlive!: number
-  @Prop() cellsCreated!: number
-  @Prop() currentSpeed!: number
-  @Prop() hairyness!: number
   @Prop() edges!: number
+  @Prop() cellsAlive!: number
+  @Prop() hairyness!: number
+  @Prop() currentSpeed!: number
+  @Prop() compactness!: number
 }
 </script>
 
