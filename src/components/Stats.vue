@@ -8,7 +8,7 @@
         <strong>EDGES: {{ edges }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
-        <strong>CELLS ALIVE: {{ cellsAlive }}</strong>
+        <strong>CELLS: {{ cellsAlive }}</strong>
       </div>
       <div class="column is-size-7-mobile is-half-mobile">
         <strong>HAIRYNESS: {{ hairyness.toFixed(3) }}</strong>
@@ -43,7 +43,9 @@ export default class Board extends Vue {
   flex-wrap: wrap;
 }
 .column {
-  color: white;
   margin: 0;
+}
+strong {
+  color: white !important;
 }
 </style>

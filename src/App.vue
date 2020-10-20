@@ -10,7 +10,7 @@
                 <span class="icon">
                   <i class="fas fa-fire" />
                 </span>
-                <span><strong>GAME OF FIRE</strong></span>
+                <span><strong>GAME OF FIRE</strong> - A Conway tribute</span>
               </a>
               <span
                 :class="{ 'is-active': isNavbar }"
@@ -25,22 +25,22 @@
             </div>
             <div id="navbarMenuHeroA" :class="{ 'is-active': isNavbar }" class="navbar-menu">
               <div class="navbar-end">
-                <a class="navbar-item" @click="swapComponent('gamePage')">
-                  <button class="button">
+                <span class="navbar-item">
+                  <a class="button" @click="swapComponent('gamePage')">
                     <span class="icon">
                       <i class="fas fa-gamepad" />
                     </span>
                     <span>GAME</span>
-                  </button>
-                </a>
-                <a class="navbar-item" @click="swapComponent('infoPage')">
-                  <button class="button">
+                  </a>
+                </span>
+                <span class="navbar-item">
+                  <a class="button" @click="swapComponent('infoPage')">
                     <span class="icon">
                       <i class="fas fa-info" />
                     </span>
                     <span>INFO</span>
-                  </button>
-                </a>
+                  </a>
+                </span>
                 <span class="navbar-item">
                   <a
                     class="button is-info"
@@ -374,6 +374,10 @@ body {
   align-items: stretch !important;
   padding-top: 18px;
   padding-bottom: 12px;
+}
+.box {
+  background-color: transparent !important;
+  color: white !important;
 }
 .footer {
   padding: 1rem;
