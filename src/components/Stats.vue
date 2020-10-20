@@ -46,6 +46,6 @@ export default class Board extends Vue {
   margin: 0;
 }
 strong {
-  color: white !important;
+  color: lightgray !important;
 }
 </style>

@@ -111,9 +111,8 @@ export default class Controller extends Vue {
 .box {
   padding: 0;
 }
-button {
+.button {
   background-color: transparent;
-  border: #333;
   color: white;
 }
 .green {

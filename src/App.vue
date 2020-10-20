@@ -41,6 +41,20 @@
                     <span>INFO</span>
                   </a>
                 </span>
+
+                <span class="navbar-item">
+                  <a
+                    class="button is-info"
+                    href="https://www.quantamagazine.org/three-math-puzzles-inspired-by-john-horton-conway-20201015"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <span class="icon">
+                      <i class="fa fa-cog" />
+                    </span>
+                    <span>QuantaMagazine</span>
+                  </a>
+                </span>
                 <span class="navbar-item">
                   <a
                     class="button is-info"
@@ -355,9 +369,7 @@ export default {
 @import url(../src/scss/main.scss);
 html,
 body {
-  background-image: linear-gradient(to right top, black, #333);
-  // background-image: linear-gradient(to right top, black, purple);
-  // background-image: linear-gradient(to right top, black, darkred);
+  background-color: #000;
   color: #000;
   font-family: 'Dosis', Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -378,6 +390,13 @@ body {
 .box {
   background-color: transparent !important;
   color: white !important;
+}
+.navbar-item .button {
+  background-color: transparent !important;
+  border: 1px transparent !important;
+  span {
+    color: white !important;
+  }
 }
 .footer {
   padding: 1rem;
