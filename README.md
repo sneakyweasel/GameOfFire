@@ -12,7 +12,8 @@ You have an infinite plane on which you place square tiles. One at a time, you a
 ## Conway QuantaMagazine tribute
 
 - I wrote this as a tribute to Conway. [QuantaMagazine](https://www.quantamagazine.org/three-math-puzzles-inspired-by-john-horton-conway-20201015/#comments)
-- Inspired by [ljee](https://github.com/Ijee) game of life implementation.
+- "Inspired" by [ljee](https://github.com/Ijee) game of life implementation.
+- Also check [QuantumGame2](https://quantumgame.io/), a quantum optics puzzle game.
 
 ## Project setup
 
