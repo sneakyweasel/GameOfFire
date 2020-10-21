@@ -1,6 +1,6 @@
 <template>
   <div class="gameinfo">
-    <h1 class="title">Game of Weasel</h1>
+    <h1 class="title">Game of Fire</h1>
     <h2 class="subtitle">
       Implementation of John Conway's quantamagazine third game. (<a
         href="https://www.quantamagazine.org/three-math-puzzles-inspired-by-john-horton-conway-20201015/"
