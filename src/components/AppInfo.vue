@@ -79,6 +79,9 @@ export default class AppInfo extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+.title {
+  color: white;
+}
 .subtitle {
   color: grey;
 }
