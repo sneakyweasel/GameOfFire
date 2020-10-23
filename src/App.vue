@@ -216,12 +216,12 @@ export default {
       isImport: false,
       isExport: false,
       // Used to determine the speed the application runs at
-      speed: 300,
+      speed: 500,
       intervalID: 0,
       // Variables to determine which page/scenario to show
       mainComponent: 'gamePage',
       selectedScenario: 'scenario',
-      values: [1,2,3,4]
+      values: [1, 2, 3, 4],
     }
   },
   watch: {
@@ -286,7 +286,7 @@ export default {
     },
     /**
      * Retrieve values from controller form
-    */
+     */
     updateValues(values) {
       // console.log(`REC: ${values}`);
       this.values = values.map((value) => {

@@ -7,6 +7,7 @@ export interface CellI {
   x: number
   y: number
   alive: boolean
+  edges: number
   risk: number
 }
 

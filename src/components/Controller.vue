@@ -2,10 +2,10 @@
   <div class="box">
     <div class="field has-addons has-addons-centered is-marginless">
       <p class="control">
-        <input class="num" type="number" v-model="num1" placeholder="1" @change="updateValues">
-        <input class="num" type="number" v-model="num2" placeholder="2" @change="updateValues">
-        <input class="num" type="number" v-model="num3" placeholder="3" @change="updateValues">
-        <input class="num" type="number" v-model="num4" placeholder="4" @change="updateValues">
+        <input class="num" type="number" v-model="num1" placeholder="1" @change="updateValues" />
+        <input class="num" type="number" v-model="num2" placeholder="2" @change="updateValues" />
+        <input class="num" type="number" v-model="num3" placeholder="3" @change="updateValues" />
+        <input class="num" type="number" v-model="num4" placeholder="4" @change="updateValues" />
       </p>
       <p class="control">
         <button
@@ -109,7 +109,6 @@ export default class Controller extends Vue {
   num4 = 4
 
   updateValues() {
-    // console.log(`EMIT: ${[this.num1, this.num2, this.num3, this.num4]}`)
     this.$emit('update', [this.num1, this.num2, this.num3, this.num4])
   }
 
@@ -153,7 +152,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 </style>
