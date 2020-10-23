@@ -1,14 +1,22 @@
 <template>
-  <div :class="computeClass" @click="toggleCell" @mouseover="hoveredCell" />
+  <div :style="{ backgroundColor: color }" :class="computeClass" @click="toggleCell" @mouseover="hoveredCell">
+  <!-- <div :class="computeClass" @click="toggleCell" @mouseover="hoveredCell"> -->
+    <span class="text" v-if="cell.risk != 0">
+    {{ cell.risk }}
+    </span>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { CellI } from '@/engine/interfaces'
+// import { scaleSequential } from 'd3-scale'
+// import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic'
 
 @Component
 export default class Board extends Vue {
   @Prop() cell!: CellI
+  @Prop() color!: string
 
   alive = this.cell.alive
 
@@ -50,12 +58,16 @@ $risk2: #ff9a00;
 $risk3: #ff7400;
 $risk4: #ff5a00;
 $alive: #ff0d00;
+$alive: purple;
 $time: 500ms;
 .cell {
   flex: 1;
+  text-align: center;
   padding-bottom: 100%;
-  // border-right: 1px solid lightgrey;
-  // border-bottom: 1px solid lightgrey;
+  justify-content: center;
+  align-items: center;
+  // min-width: 32px;
+  // min-height: 32px;
   background-color: #111;
   -webkit-transition: background-color $time linear;
   -ms-transition: background-color $time linear;
@@ -63,6 +75,10 @@ $time: 500ms;
   &:hover {
     background-color: lighten($alive, 25) !important;
   }
+}
+.text {
+  position: absolute;
+  color: grey;
 }
 .alive {
   background-color: $alive !important;

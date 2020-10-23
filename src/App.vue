@@ -83,6 +83,7 @@
                 :is-running="isRunning"
                 :main-component="mainComponent"
                 @send="delegate($event)"
+                @update="updateValues($event)"
               />
               <transition mode="out-in" name="fade">
                 <keep-alive>
@@ -91,6 +92,7 @@
                     :message="message"
                     :import-token="importToken"
                     :current-speed="speed"
+                    :values="values"
                     @exportToken="exportSession($event)"
                   />
                   <app-info v-if="mainComponent == 'infoPage'" />
@@ -219,6 +221,7 @@ export default {
       // Variables to determine which page/scenario to show
       mainComponent: 'gamePage',
       selectedScenario: 'scenario',
+      values: [1,2,3,4]
     }
   },
   watch: {
@@ -280,6 +283,15 @@ export default {
       } else {
         this.updateMessage(event)
       }
+    },
+    /**
+     * Retrieve values from controller form
+    */
+    updateValues(values) {
+      // console.log(`REC: ${values}`);
+      this.values = values.map((value) => {
+        return parseInt(value)
+      })
     },
     /**
      * Updates  message  that gets passed

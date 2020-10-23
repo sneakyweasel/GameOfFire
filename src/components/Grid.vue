@@ -7,6 +7,7 @@
           v-for="(cell, indexY) in col"
           :key="indexY"
           :cell="cell"
+          :color="riskColor(cell)"
           @toggleCell="toggleCell(cell)"
           @hoveredCell="displayCell(cell)"
         />
@@ -35,6 +36,8 @@ import { CellI, Coord } from '@/engine/interfaces'
 import Cell from '@/components/Cell.vue'
 import Stats from '@/components/Stats.vue'
 import Controller from '@/components/Controller.vue'
+import { scaleSequential } from 'd3-scale'
+import { interpolateViridis, interpolateInferno, interpolateOranges, interpolateMagma } from 'd3-scale-chromatic'
 
 @Component({
   components: {
@@ -47,6 +50,7 @@ export default class Board extends Vue {
   @Prop() message!: string
   @Prop() importToken!: string
   @Prop() currentSpeed!: number
+  @Prop() values!: number[]
 
   width = 31
   height = 20
@@ -94,6 +98,17 @@ export default class Board extends Vue {
       }
     }
     this.cellCount = this.width * this.height
+  }
+
+ /** 
+   * Compute style
+   */
+  riskColor(cell: CellI): any {
+    const min = Math.min(...this.values);
+    const max = Math.max(...this.values);
+    // return scaleSequential(interpolateInferno).domain([min, max])(cell.risk)
+    // return scaleSequential(interpolateViridis).domain([min, max])(cell.risk)
+    return scaleSequential(interpolateMagma).domain([min, max])(cell.risk)
   }
 
   /** List of alive cells */
@@ -163,7 +178,28 @@ export default class Board extends Vue {
         if (cell.alive) {
           this.grid[cell.x][cell.y] = { x, y, alive: true, risk: 0 }
         } else {
-          this.grid[cell.x][cell.y] = { x, y, alive: false, risk: neighbours }
+          let nVal = 0
+          switch (neighbours) {
+            case 0:
+              nVal = 0
+              break
+            case 1:
+              nVal = this.values[0]
+              break
+            case 2:
+              nVal = this.values[1]
+              break
+            case 3:
+              nVal = this.values[2]
+              break
+            case 4:
+              nVal = this.values[3]
+              break
+          
+            default:
+              throw new Error("Error in risk update...")
+          }
+          this.grid[cell.x][cell.y] = { x, y, alive: false, risk: nVal }
         }
       }
     }

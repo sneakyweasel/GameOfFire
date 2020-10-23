@@ -2,6 +2,12 @@
   <div class="box">
     <div class="field has-addons has-addons-centered is-marginless">
       <p class="control">
+        <input class="num" type="number" v-model="num1" placeholder="1" @change="updateValues">
+        <input class="num" type="number" v-model="num2" placeholder="2" @change="updateValues">
+        <input class="num" type="number" v-model="num3" placeholder="3" @change="updateValues">
+        <input class="num" type="number" v-model="num4" placeholder="4" @change="updateValues">
+      </p>
+      <p class="control">
         <button
           :disabled="mainComponent !== 'gamePage'"
           class="button"
@@ -97,6 +103,16 @@ export default class Controller extends Vue {
   @Prop() isRunning = false
   @Prop() mainComponent = 'gamePage'
 
+  num1 = 1
+  num2 = 2
+  num3 = 3
+  num4 = 4
+
+  updateValues() {
+    // console.log(`EMIT: ${[this.num1, this.num2, this.num3, this.num4]}`)
+    this.$emit('update', [this.num1, this.num2, this.num3, this.num4])
+  }
+
   /**
    * emits the action that is requested
    * by the client up to the App component.
@@ -120,5 +136,24 @@ export default class Controller extends Vue {
 }
 .red {
   background-color: hsla(0, 67%, 31%, 0.6);
+}
+.num {
+  background-color: black;
+  color: white;
+  width: 40px;
+  height: 36px;
+  border: 1px solid white;
+  text-align: center;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>
