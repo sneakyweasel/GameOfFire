@@ -31,7 +31,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import { CellI, Coord } from '@/engine/interfaces'
+import { CellI } from '@/engine/interfaces'
+import Coord from '@/engine/Coord'
 import Cell from '@/components/Cell.vue'
 import Stats from '@/components/Stats.vue'
 import Controller from '@/components/Controller.vue'
@@ -160,7 +161,7 @@ export default class Board extends Vue {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const cell = this.getCell(x, y)
-        const neighbours = this.getNeighbours(x, y)
+        const neighbours = this.getAliveNeighbours(new Coord(x, y))
         if (cell.alive) {
           this.grid[cell.x][cell.y] = { x, y, alive: true, risk: 0, edges: 0 }
         } else {
@@ -197,9 +198,8 @@ export default class Board extends Vue {
    * @param {number} posY - the Y position
    * @return {number} neighbours - amount of neighbours
    */
-  getNeighbours(x: number, y: number): number {
-    const coords = this.neighbours(x, y)
-    return coords.filter((coord) => {
+  getAliveNeighbours(coord: Coord): number {
+    return this.neighbours(coord).filter((coord) => {
       return this.grid[coord.x][coord.y].alive
     }).length
   }
@@ -208,32 +208,8 @@ export default class Board extends Vue {
    * Get the neighbouring grid cell at given direction
    * @param direction
    */
-  neighbours(x: number, y: number): Coord[] {
-    let coords = [
-      {
-        x: x + 1,
-        y,
-      },
-      {
-        x,
-        y: y - 1,
-      },
-      {
-        x: x - 1,
-        y,
-      },
-      {
-        x,
-        y: y + 1,
-      },
-    ]
-    coords = coords.filter((coord: Coord) => this.validate(coord))
-    return coords
-  }
-
-  /** Check coord */
-  validate(coord: Coord): boolean {
-    return coord.x >= 0 && coord.x < this.width && coord.y >= 0 && coord.y < this.height
+  neighbours(coord: Coord): Coord[] {
+    return coord.adjacents().filter((coord: Coord) => coord.validate(this.width, this.height))
   }
 
   /**
@@ -300,7 +276,8 @@ export default class Board extends Vue {
         const xy = element.split(',')
         const x = parseInt(xy[0])
         const y = parseInt(xy[1])
-        if (this.validate({ x, y })) {
+        const coord = new Coord(x, y)
+        if (coord.validate(this.width, this.height)) {
           const cell: CellI = {
             x: parseInt(xy[0]),
             y: parseInt(xy[1]),
@@ -347,20 +324,10 @@ export default class Board extends Vue {
   }
 
   edgesToRisk(edges: number): number {
-    switch (edges) {
-      case 0:
-        return 0
-      case 1:
-        return this.values[0]
-      case 2:
-        return this.values[1]
-      case 3:
-        return this.values[2]
-      case 4:
-        return this.values[3]
-      default:
-        throw new Error('Error in risk update...')
+    if (edges === 0) {
+      return 0
     }
+    return 8 - edges
   }
 
   /**

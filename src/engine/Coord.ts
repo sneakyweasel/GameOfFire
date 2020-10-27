@@ -35,7 +35,7 @@ export default class Coord {
     }
   }
 
-  adjacents(diagonal = true): Coord[] {
+  adjacents(diagonal = false): Coord[] {
     if (diagonal) {
       return [
         this.adjacent(Direction.N),
