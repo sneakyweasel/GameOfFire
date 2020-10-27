@@ -12,8 +12,12 @@ export interface CellI {
 }
 
 export const enum Direction {
-  Right,
-  Up,
-  Left,
-  Down,
+  NW,
+  N,
+  NE,
+  W,
+  E,
+  SW,
+  S,
+  SE,
 }

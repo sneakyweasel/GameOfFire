@@ -1,5 +1,10 @@
 <template>
-  <div :class="computeClass" @click="toggleCell" @mouseover="hoveredCell">
+  <div
+    :style="{ backgroundColor: riskColor }"
+    :class="computeClass"
+    @click="toggleCell"
+    @mouseover="hoveredCell"
+  >
     <span class="text" v-if="cell.risk != 0">
       {{ cell.risk }}
     </span>
@@ -9,12 +14,21 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { CellI } from '@/engine/interfaces'
+import { scaleSequential } from 'd3-scale'
+import { interpolateInferno } from 'd3-scale-chromatic'
 
 @Component
 export default class Board extends Vue {
   @Prop() cell!: CellI
 
   alive = this.cell.alive
+
+  /**
+   * Compute style
+   */
+  get riskColor(): unknown {
+    return scaleSequential(interpolateInferno).domain([0, 8])(this.cell.risk)
+  }
 
   /**
    * Checks if the cell has been clicked
@@ -40,7 +54,7 @@ export default class Board extends Vue {
     if (this.cell.alive) {
       result += 'alive '
     } else {
-      result += `risk${this.cell.edges}`
+      // result += `risk${this.cell.risk}`
     }
     return result
   }
@@ -54,7 +68,6 @@ $risk2: #ff9a00;
 $risk3: #ff7400;
 $risk4: #ff5a00;
 $alive: #ff0d00;
-
 $time: 500ms;
 .cell {
   flex: 1;
@@ -62,6 +75,8 @@ $time: 500ms;
   padding-bottom: 100%;
   justify-content: center;
   align-items: center;
+  // min-width: 32px;
+  // min-height: 32px;
   background-color: #111;
   -webkit-transition: background-color $time linear;
   -ms-transition: background-color $time linear;
@@ -72,7 +87,7 @@ $time: 500ms;
 }
 .text {
   position: absolute;
-  color: black;
+  color: grey;
 }
 .alive {
   background-color: $alive !important;
